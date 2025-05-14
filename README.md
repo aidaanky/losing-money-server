@@ -1,137 +1,183 @@
-# Losing Money - Texas Hold'em Poker Game
+# Losing Money — Texas Hold’em Poker
 
-A real-time multiplayer Texas Hold'em poker game built with Next.js and Socket.IO.
+[![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-## Author
-Aidana Ispayeva
+Многопользовательская онлайн-игра Texas Hold’em Poker с реальным временем. До 6 игроков могут создать или присоединиться к лобби, получать карты, делать ставки и видеть результаты сразу. Есть режим одиночной игры с ботами.
 
-## Tech Stack
+---
 
-### Frontend
-- **Next.js** - React framework for server-side rendering and routing
-- **React** - UI library
-- **Socket.IO Client** - Real-time communication
-- **Framer Motion** - Animations
-- **TailwindCSS** - Styling
-- **Howler.js** - Sound effects
+## Содержание
 
-### Backend
-- **Node.js** - Runtime environment
-- **Express** - Web framework
-- **Socket.IO** - Real-time communication
-- **Poker Hand Evaluator** - Hand strength calculation
+1. [Описание проекта](#описание-проекта)  
+2. [Установка и запуск](#установка-и-запуск)  
+3. [Процесс проектирования и разработки](#процесс-проектирования-и-разработки)  
+4. [Уникальные подходы и методологии](#уникальные-подходы-и-методологии)  
+5. [Компромиссы и соображения](#компромиссы-и-соображения)  
+6. [Известные проблемы и ограничения](#известные-проблемы-и-ограничения)  
+7. [Почему этот стек технологий](#почему-этот-стек-технологий)  
+8. [Участие в разработке](#участие-в-разработке)  
+9. [Лицензия](#лицензия)  
 
-## Architecture
+---
 
-### Client-Server Architecture
-- **WebSocket Connection**: Real-time bidirectional communication between client and server
-- **Room-based System**: Players join specific rooms using 4-digit room codes
-- **State Management**: Server maintains game state, client receives updates via WebSocket events
+## Описание проекта
 
-### Key Components
-1. **Room System**
-   - Unique 4-digit room codes
-   - Maximum 6 players per room
-   - Host controls game start and bot management
+**Losing Money** — это онлайн-клон Texas Hold’em Poker с реализацией в реальном времени через WebSockets. Игроки подключаются к «комнате» по короткому коду, видят действия друг друга и борются за общий банк. Встроенный режим одиночной игры позволяет играть против простых ботов.
 
-2. **Game Engine**
-   - Hand evaluation
-   - Betting rounds
-   - Player actions (fold, check, call, raise)
-   - Bot AI for single-player mode
+---
 
-3. **Real-time Updates**
-   - Player list updates
-   - Game state synchronization
-   - Betting updates
-   - Hand results
+## Установка и запуск
 
-## Game Rules
+### Требования
 
-### Basic Rules
-1. Each player receives 2 private cards (hole cards)
-2. 5 community cards are dealt in stages:
-   - Flop (3 cards)
-   - Turn (1 card)
-   - River (1 card)
-3. Players make the best 5-card hand using any combination of their hole cards and community cards
+- Node.js v14 или выше  
+- npm (или yarn)  
 
-### Betting Rounds
-1. **Pre-flop**: After receiving hole cards
-2. **Flop**: After first 3 community cards
-3. **Turn**: After 4th community card
-4. **River**: After final community card
+### Клонирование и установка
 
-### Player Actions
-- **Fold**: Give up hand and forfeit current bet
-- **Check**: Pass without betting (if no current bet)
-- **Call**: Match current bet
-- **Raise**: Increase current bet
-
-### Hand Rankings (Highest to Lowest)
-1. Royal Flush
-2. Straight Flush
-3. Four of a Kind
-4. Full House
-5. Flush
-6. Straight
-7. Three of a Kind
-8. Two Pair
-9. One Pair
-10. High Card
-
-### Starting Chips
-- Each player starts with 1000 chips
-- Small Blind: 5 chips
-- Big Blind: 10 chips
-
-## Getting Started
-
-### Prerequisites
-- Node.js (v14 or higher)
-- npm or yarn
-
-### Installation
-1. Clone the repository
 ```bash
-git clone [repository-url]
+git clone https://github.com/your-username/losing-money.git
 cd losing-money
-```
-
-2. Install dependencies
-```bash
 npm install
-```
+````
 
-3. Start the development server
-```bash
-npm run dev
-```
+### Переменные окружения
 
-4. Open [http://localhost:3000](http://localhost:3000) in your browser
+В корне (клиент):
 
-### Environment Variables
-Create a `.env` file in the root directory:
-```
+```env
 NEXT_PUBLIC_API_URL=http://localhost:4000
 ```
 
-## Features
-- Real-time multiplayer gameplay
-- Single-player mode with AI bots
-- Customizable bot difficulty
-- Room-based matchmaking
-- Hand strength evaluation
-- Animated card dealing
-- Sound effects
-- Responsive design
+В папке `server/`:
 
-## Contributing
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
+```env
+PORT=4000
+CLIENT_URL=http://localhost:3000
+```
+
+> **Не** добавляйте файлы `.env*` в систему контроля версий.
+
+### Запуск локально
+
+1. **Запустить сервер**
+
+   ```bash
+   cd server
+   npm install
+   npm run start
+   ```
+2. **Запустить клиент**
+
+   ```bash
+   cd ..
+   npm run dev
+   ```
+3. Откройте [http://localhost:3000](http://localhost:3000) в браузере.
+
+---
+
+## Процесс проектирования и разработки
+
+1. **Сбор требований**
+
+   * Определили основные сценарии: создание/присоединение к комнате, раздача карт, раунды ставок, отображение результатов.
+2. **Прототипирование UI/UX**
+
+   * Нарисовали страницы: Home, Rules, Lobby, Game.
+   * Выбрали стиль glassmorphism и mobile-first подход.
+3. **Frontend**
+
+   * Next.js для маршрутизации и SSR/SSG.
+   * Tailwind CSS для стилей, Framer Motion для анимаций, Howler.js для звуков.
+4. **Backend и логика реального времени**
+
+   * Отдельный сервер на Express + Socket.IO.
+   * Реализация комнат, перемешивания колоды, состояний ставок.
+5. **Тестирование и итерации**
+
+   * Локальные игры с несколькими клиентами в разных браузерах.
+   * Симуляция медленного соединения и проверка повторного подключения.
+
+---
+
+## Уникальные подходы и методологии
+
+* **Модульная логика колоды**
+  Fisher–Yates shuffle и функции deal в отдельном модуле для простоты тестирования и переиспользования.
+* **Архитектура на базе комнат Socket.IO**
+  Изоляция игровых экземпляров и эффективная рассылка событий.
+* **Glassmorphism и отзывчивые анимации**
+  Полупрозрачные панели, размытие фона и «пружинные» переходы для UX.
+* **Howler.js для звуков**
+  Качественные аудиосигналы при нажатиях, раздаче и ставках без блокировки UI.
+
+---
+
+## Компромиссы и соображения
+
+* **Состояние в памяти vs постоянное хранилище**
+  Выбрали хранение хода игры в оперативной памяти для быстродействия, но потеряли устойчивость при перезапуске сервера.
+* **Ограниченная масштабируемость**
+  До 6 игроков на комнату и отсутствие базы данных ограничивают число одновременных комнат.
+* **Уровень ИИ ботов**
+  Реализован простой rule-based бот, а не сложный вероятностный, чтобы сконцентрироваться на механике реального времени.
+
+---
+
+## Известные проблемы и ограничения
+
+* **Пере-соединение**
+  Быстрые переподключения иногда не восстанавливают текущее состояние раунда.
+* **Поздние участники**
+  Игроки, вошедшие после начала раздачи, не получают историю событий текущей руки.
+* **Мобильная верстка**
+  На экранах уже 320px возможны незначительные смещения элементов в лобби.
+
+---
+
+## Почему этот стек технологий
+
+* **Next.js**
+  Встроенный роутинг, SSR/SSG и отличный DX для React.
+* **Tailwind CSS**
+  Утилитарные классы для быстрой и консистентной верстки.
+* **Socket.IO**
+  Полноценная двунаправленная связь с комнатами и автоматическим переподключением.
+* **Express**
+  Легковесный сервер, хорошо сочетающийся с Socket.IO.
+* **Framer Motion**
+  Декларативные анимации React для плавного UX.
+* **Howler.js**
+  Кросс-браузерное воспроизведение звуковых эффектов без блокировки.
+
+---
+
+## Участие в разработке
+
+1. Fork this repository
+2. Create your feature branch
+
+   ```bash
+   git checkout -b feature/AmazingFeature
+   ```
+3. Commit your changes
+
+   ```bash
+   git commit -m "Add AmazingFeature"
+   ```
+4. Push to your branch
+
+   ```bash
+   git push origin feature/AmazingFeature
+   ```
 5. Open a Pull Request
 
-## License
-This project is licensed under the MIT License - see the LICENSE file for details.
+---
+
+## Лицензия
+
+Этот проект распространяется под лицензией MIT. См. файл [LICENSE](LICENSE) для подробностей.
+
+```
+```
